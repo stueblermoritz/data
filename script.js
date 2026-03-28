@@ -1,23 +1,28 @@
 const user = "stueblermoritz";
 const repo = "data";
 
-fetch(`https://api.github.com/repos/${user}/${repo}/contents/`)
-.then(response => response.json())
-.then(data => {
+const api = `https://api.github.com/repos/${user}/${repo}/contents`;
+
+fetch(api)
+  .then(response => response.json())
+  .then(files => {
 
     const list = document.getElementById("repoList");
 
-    data.forEach(file => {
+    files.forEach(file => {
 
-        const li = document.createElement("li");
-        const link = document.createElement("a");
+      const li = document.createElement("li");
+      const link = document.createElement("a");
 
-        link.href = file.html_url;
-        link.textContent = file.name;
+      link.href = file.download_url;
+      link.textContent = file.name;
 
-        li.appendChild(link);
-        list.appendChild(li);
+      li.appendChild(link);
+      list.appendChild(li);
 
     });
 
-});
+  })
+  .catch(error => {
+    console.error("API Fehler:", error);
+  });
