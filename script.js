@@ -8,21 +8,26 @@ fetch(`https://api.github.com/repos/${user}/${repo}/contents`)
     const list = document.getElementById("repoList");
 
     files.forEach(file => {
+      const li = document.createElement("li");
+      const link = document.createElement("a");
 
-      // GitHub API Feld kann 'path' oder 'Pfad' sein
+      // Pfad aus API berücksichtigen
       const path = file.path || file.Pfad;
 
-      // nur HTML-Dateien
-      if (file.name.endsWith(".html")) {
-        const li = document.createElement("li");
-        const link = document.createElement("a");
+      // Alle Dateien anzeigen
+      // HTML & Bilder → direkt öffnen
+      if (file.name.match(/\.(html|jpg|jpeg|png|gif)$/i)) {
         link.href = pagesBase + path;
-        link.textContent = file.name;
-        link.target = "_blank"; // in neuem Tab öffnen
-        li.appendChild(link);
-        list.appendChild(li);
+        link.target = "_blank";
+      } else {
+        // Alle anderen → Download
+        link.href = file.download_url;
+        link.target = "_blank";
       }
 
+      link.textContent = file.name;
+      li.appendChild(link);
+      list.appendChild(li);
     });
   })
   .catch(err => console.error("API Fehler:", err));
