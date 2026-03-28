@@ -1,5 +1,5 @@
-const user = "USERNAME";
-const repo = "REPOSITORY";
+const user = "stueblermoritz";
+const repo = "data";
 
 fetch(`https://api.github.com/repos/${user}/${repo}/contents/`)
 .then(response => response.json())
